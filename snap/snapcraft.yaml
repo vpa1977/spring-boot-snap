@@ -1,0 +1,78 @@
+name: spring-boot
+base: core22
+version: '0.01'
+summary: Spring Boot framework and development tools
+description: |
+  Spring boot framework and development tools
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+
+parts:
+
+  packages:
+    plugin: nil
+    stage-packages:
+      - openjdk-17-jdk
+      - git
+
+  build:
+    plugin: nil
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp $CRAFT_PROJECT_DIR/build-springboot.sh $CRAFT_PART_INSTALL/usr/bin
+
+  spring-boot-cli:
+    plugin: nil
+    source: https://github.com/spring-projects/spring-cli
+    source-type: git
+    source-tag: v0.8.1
+    stage-packages:
+      - openjdk-17-jdk
+    build-packages:
+      - openjdk-17-jdk-headless
+    override-build: |
+      ./gradlew build -x test
+    override-stage: |
+      mkdir -p $CRAFT_PART_INSTALL/spring-cli
+      cp $CRAFT_PART_BUILD/build/libs/spring-cli-0.8.1.jar $CRAFT_PART_INSTALL/spring-cli
+      craftctl default
+
+plugs:
+  local-maven-repo:
+    interface: personal-files
+    read:
+      - $HOME/.m2
+    write:
+      - $HOME/.m2
+  gradle-home:
+    interface: personal-files
+    read:
+      - $HOME/.gradle
+    write:
+      - $HOME/.gradle
+  spring-cli:
+    interface: personal-files
+    read:
+      - $HOME/.config/springcli
+    write:
+      - $HOME/.config/springcli
+
+apps:
+  install:
+    command: $SNAP/usr/bin/build-springboot.sh
+    plugs:
+      - home
+      - network
+      - network-bind
+      - local-maven-repo
+      - gradle-home
+
+  spring:
+    command: $SNAP/usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar $SNAP/spring-cli/spring-cli-0.8.1.jar
+    plugs:
+      - home
+      - network
+      - local-maven-repo
+      - gradle-home
+      - spring-cli
