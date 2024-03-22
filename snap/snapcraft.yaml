@@ -1,20 +1,14 @@
 name: spring-boot
 base: core22
 version: '0.01'
-summary: Spring Boot framework and development tools
+summary: Spring Boot framework development tools
 description: |
-  Spring boot framework and development tools
+  Spring boot framework development tools
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: strict # use 'strict' once you have the right plugs and slots
+confinement: classic # use 'strict' once you have the right plugs and slots
 
 parts:
-
-  packages:
-    plugin: nil
-    stage-packages:
-      - openjdk-17-jdk
-      - git
 
   build:
     plugin: nil
@@ -22,13 +16,11 @@ parts:
       mkdir -p $CRAFT_PART_INSTALL/usr/bin
       cp $CRAFT_PROJECT_DIR/build-springboot.sh $CRAFT_PART_INSTALL/usr/bin
 
-  spring-boot-cli:
+  spring-cli:
     plugin: nil
     source: https://github.com/spring-projects/spring-cli
     source-type: git
     source-tag: v0.8.1
-    stage-packages:
-      - openjdk-17-jdk
     build-packages:
       - openjdk-17-jdk-headless
     override-build: |
@@ -38,25 +30,20 @@ parts:
       cp $CRAFT_PART_BUILD/build/libs/spring-cli-0.8.1.jar $CRAFT_PART_INSTALL/spring-cli
       craftctl default
 
-plugs:
-  local-maven-repo:
-    interface: personal-files
-    read:
-      - $HOME/.m2
-    write:
-      - $HOME/.m2
-  gradle-home:
-    interface: personal-files
-    read:
-      - $HOME/.gradle
-    write:
-      - $HOME/.gradle
-  spring-cli:
-    interface: personal-files
-    read:
-      - $HOME/.config/springcli
-    write:
-      - $HOME/.config/springcli
+  spring-boot-cli:
+    plugin: nil
+    source: https://github.com/spring-projects/spring-boot
+    source-type: git
+    source-tag: v3.2.4
+    build-packages:
+      - openjdk-17-jdk-headless
+      - tar
+    override-build: |
+      cd spring-boot-project/spring-boot-tools/spring-boot-cli/ && ../../../gradlew publish
+    override-stage: |
+      mkdir -p $CRAFT_PART_INSTALL/spring-boot-cli
+      tar xvf spring-boot-project/spring-boot-tools/spring-boot-cli/build/distributions/spring-boot-cli-3.2.4-bin.tar.gz -C $CRAFT_PART_INSTALL/spring-boot-cli
+      craftctl default
 
 apps:
   install:
@@ -68,8 +55,17 @@ apps:
       - local-maven-repo
       - gradle-home
 
-  spring:
-    command: $SNAP/usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar $SNAP/spring-cli/spring-cli-0.8.1.jar
+  spring-boot-cli:
+    command: $SNAP/spring-boot-cli/bin/spring
+    plugs:
+      - home
+      - network
+      - local-maven-repo
+      - gradle-home
+      - spring-cli
+
+  spring-cli:
+    command: java -jar $SNAP/spring-cli/spring-cli-0.8.1.jar
     plugs:
       - home
       - network
