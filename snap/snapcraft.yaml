@@ -10,7 +10,7 @@ confinement: classic # use 'strict' once you have the right plugs and slots
 
 parts:
 
-  build:
+  cache:
     plugin: nil
     override-build: |
       mkdir -p $CRAFT_PART_INSTALL/usr/bin
@@ -28,6 +28,7 @@ parts:
     override-stage: |
       mkdir -p $CRAFT_PART_INSTALL/spring-cli
       cp $CRAFT_PART_BUILD/build/libs/spring-cli-0.8.1.jar $CRAFT_PART_INSTALL/spring-cli
+      cp $CRAFT_PROJECT_DIR/run-spring-cli.sh $CRAFT_PART_INSTALL/spring-cli
       craftctl default
 
   spring-boot-cli:
@@ -42,33 +43,15 @@ parts:
       cd spring-boot-project/spring-boot-tools/spring-boot-cli/ && ../../../gradlew publish
     override-stage: |
       mkdir -p $CRAFT_PART_INSTALL/spring-boot-cli
-      tar xvf spring-boot-project/spring-boot-tools/spring-boot-cli/build/distributions/spring-boot-cli-3.2.4-bin.tar.gz -C $CRAFT_PART_INSTALL/spring-boot-cli
+      tar xvf $CRAFT_PART_BUILD/spring-boot-project/spring-boot-tools/spring-boot-cli/build/distributions/spring-boot-cli-3.2.4-bin.tar.gz --strip-components 1 -C $CRAFT_PART_INSTALL/spring-boot-cli
       craftctl default
 
 apps:
-  install:
-    command: $SNAP/usr/bin/build-springboot.sh
-    plugs:
-      - home
-      - network
-      - network-bind
-      - local-maven-repo
-      - gradle-home
+  cache:
+    command: usr/bin/build-springboot.sh
 
   spring-boot-cli:
-    command: $SNAP/spring-boot-cli/bin/spring
-    plugs:
-      - home
-      - network
-      - local-maven-repo
-      - gradle-home
-      - spring-cli
+    command: spring-boot-cli/bin/spring
 
   spring-cli:
-    command: java -jar $SNAP/spring-cli/spring-cli-0.8.1.jar
-    plugs:
-      - home
-      - network
-      - local-maven-repo
-      - gradle-home
-      - spring-cli
+    command: spring-cli/run-spring-cli.sh

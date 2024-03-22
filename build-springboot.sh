@@ -1,13 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 set -ex
 
 export SPRING_BOOT_UPSTREAM=https://github.com/spring-projects/spring-boot
-export JAVA_HOME=$SNAP/usr/lib/jvm/java-17-openjdk-amd64/
 export GRADLE_USER_HOME=/tmp/gradle
 
 release="$1"
 
-cd /tmp/spring-boot
+if [[ ! $# -eq 1 ]]; then
+    echo Usage: spring-boot.install '<version>'
+    exit 1
+fi
+
+tempfile=$(mktemp)
+trap 'rm -f "$tempfile"' EXIT
+
+cd ${tempfile}
 git clone -b ${release} ${SPRING_BOOT_UPSTREAM}
 
 
