@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 if ! which java > /dev/null; then
     echo Please install Java.
@@ -21,12 +21,13 @@ if [[ ! $# -eq 1 ]]; then
     exit 1
 fi
 
-tempfile=$(mktemp)
-trap 'rm -f "$tempfile"' EXIT
+tempfile=$(mktemp -d)
+trap 'rm -rf "$tempfile"' EXIT
 
 cd ${tempfile}
-git clone -b ${release} ${SPRING_BOOT_UPSTREAM}
+git clone -b ${release} ${SPRING_BOOT_UPSTREAM} > /dev/null 2>&1 || echo Unable to pull Spring Boot version ${release}
 
+cd spring-boot
 
 cat >> build.gradle <<EOF
     task cacheToMavenLocal(type: Copy) {
@@ -40,4 +41,5 @@ cat >> build.gradle <<EOF
       }
 EOF
 
-./gradlew publishToMavenLocal cacheToMavenLocal
+echo Building Spring Boot version ${release}
+./gradlew -Dorg.gradle.daemon=false publishToMavenLocal cacheToMavenLocal
