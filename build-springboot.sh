@@ -1,6 +1,16 @@
 #!/bin/bash
 set -ex
 
+if ! which java > /dev/null; then
+    echo Please install Java.
+    exit 1
+fi
+
+if ! which git > /dev/null; then
+    echo Please install git.
+    exit 1
+fi
+
 export SPRING_BOOT_UPSTREAM=https://github.com/spring-projects/spring-boot
 export GRADLE_USER_HOME=/tmp/gradle
 
