@@ -1,9 +1,13 @@
 # Spring Boot snap prototype
 
-# Introduction
+## Introduction
 
 This prototype snap packages Spring development tools.
 The snap uses classic confinement and requires Java to be present in the PATH.
+
+## Installation
+
+`snap install spring-boot --classic`
 
 ## Applications
 
@@ -21,8 +25,25 @@ It can be used to initialize a new Spring Boot project, e.g.
 
 This tool provides a set of commands to create, manage and run day-to-day tasks on the Java project.
 
-### cache
+## Sample
 
-`spring-boot.cache` is used to cache artifacts of a given Spring boot version in the local Maven repository, e.g.
+1. Create a project with `spring-boot.spring-boot-cli`
 
-`spring-boot.cache v3.2.1` will build and publish Spring Boot 3.2.1 to the local Maven repository.
+`` $ spring-boot.spring-boot-cli init --build=maven --java-version=21 --dependencies=ws --packaging=jar sample ``
+
+2. Add JPA sample code from the standard catalog using `spring-boot.spring-cli`
+
+`` spring-boot.spring-cli boot add jpa``
+
+3. AI-assisted code generation using OpenAI [ note: not tested ]
+
+3.1 Generate a new API key at https://platform.openai.com/api-keys and store it to file
+
+```
+echo OPEN_AI_API_KEY=<you-key> > ~/.openai
+chmod 0600 ~/.openai
+```
+
+3.2 Generate changes using
+
+`` spring-boot.spring-cli ai add --description '<openai prompt>' --preview ``
