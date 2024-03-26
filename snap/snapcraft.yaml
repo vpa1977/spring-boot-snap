@@ -1,4 +1,4 @@
-name: spring-boot
+name: spring-boot-dev
 base: core22
 version: '0.01'
 summary: Spring Boot framework development tools
