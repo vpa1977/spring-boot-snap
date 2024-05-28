@@ -7,7 +7,7 @@ The snap uses classic confinement and requires Java to be present in the PATH.
 
 ## Installation
 
-`snap install spring-boot-cli --classic`
+`snap install spring-boot-dev --classic`
 
 ## Applications
 
