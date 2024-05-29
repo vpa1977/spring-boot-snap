@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/canonical/spring-boot-snap/spring-boot-runtime/internal/common"
 	"github.com/canonical/spring-boot-snap/spring-boot-runtime/internal/gradle"
 	"github.com/canonical/spring-boot-snap/spring-boot-runtime/internal/maven"
 )
@@ -16,9 +17,13 @@ func main() {
 }
 
 func run() error {
-	if err := gradle.UpdateInitScripts(); err != nil {
+	repositories := []common.Repository{
+		{Id: "spring-boot", Name: "Spring Boot", Url: "file:///snap/spring-boot-runtime/current/spring-boot/"},
+		{Id: "spring-framework", Name: "Spring Framework", Url: "file:///snap/spring-boot-runtime/current/spring-framework/"},
+	}
+	if err := gradle.UpdateInitScripts(repositories); err != nil {
 		return err
 	}
 
-	return maven.UpdateSettings()
+	return maven.UpdateSettings(repositories)
 }
