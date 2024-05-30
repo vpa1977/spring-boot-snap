@@ -11,11 +11,19 @@ confinement: classic # use 'strict' once you have the right plugs and slots
 
 parts:
 
-  cache:
+  installer:
     plugin: nil
+    source: configure
+    build-packages:
+      - openjdk-17-jdk-headless
+      - maven
     override-build: |
-      mkdir -p $CRAFT_PART_INSTALL/usr/bin
-      cp $CRAFT_PROJECT_DIR/build-springboot.sh $CRAFT_PART_INSTALL/usr/bin
+      mvn publlish
+      craftctl default
+    override-stage: |
+      mkdir -p $CRAFT_PART_INSTALL/install
+      cp $CRAFT_PART_BUILD/build/configure.jar $CRAFT_PART_INSTALL/install
+      craftctl default
 
   spring-cli:
     plugin: nil
@@ -48,8 +56,8 @@ parts:
       craftctl default
 
 apps:
-#  cache:
-#    command: usr/bin/build-springboot.sh
+  install:
+    command: install/configure.jar
 
   spring-boot-cli:
     command: spring-boot-cli/bin/spring
