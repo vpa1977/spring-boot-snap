@@ -18,11 +18,12 @@ parts:
       - openjdk-17-jdk-headless
       - maven
     override-build: |
-      mvn publlish
+      mvn package
       craftctl default
     override-stage: |
       mkdir -p $CRAFT_PART_INSTALL/install
-      cp $CRAFT_PART_BUILD/build/configure.jar $CRAFT_PART_INSTALL/install
+      cp $CRAFT_PART_BUILD/target/configure-1.0-shaded.jar $CRAFT_PART_INSTALL/install/
+      chmod +x $CRAFT_PART_INSTALL/install/configure-1.0-shaded.jar
       craftctl default
 
   spring-cli:
@@ -57,7 +58,7 @@ parts:
 
 apps:
   install:
-    command: install/configure.jar
+    command: install/configure-1.0-shaded.jar
 
   spring-boot-cli:
     command: spring-boot-cli/bin/spring
