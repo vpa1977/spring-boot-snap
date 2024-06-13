@@ -1,4 +1,5 @@
 *.snap
-spring-boot-runtime/update-runtime-config/configure
 .vscode
-spring-boot-dev/configure
+spring-boot-dev/configure/.vscode
+spring-boot-dev/configure/target
+spring-boot-dev/configure/dependency-reduced-pom.xml
