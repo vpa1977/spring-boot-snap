@@ -1,0 +1,34 @@
+name: spring-framework-runtime-61
+base: bare
+build-base: core22
+version: '6.1.8'
+summary: Spring Boot framework runtime
+license: Apache-2.0
+description: |
+  Spring framework runtime
+
+grade: devel
+confinement: strict
+
+parts:
+  spring-framework:
+    plugin: nil
+    source: https://github.com/spring-projects/spring-framework/
+    source-type: git
+    source-tag: v6.1.8
+    build-snaps:
+      - spring-framework-runtime-61
+    build-packages:
+      - openjdk-17-jdk-headless
+    override-build: |
+# todo - copy snap contents into .m2
+      mkdir -p $HOME/.gradle
+      echo 'systemProp.user.name=spring-builds+github' >> $HOME/.gradle/gradle.properties
+      echo 'systemProp.org.gradle.internal.launcher.welcomeMessageEnabled=false' >> $HOME/.gradle/gradle.properties
+      echo 'org.gradle.daemon=false' >> $HOME/.gradle/gradle.properties
+      echo 'org.gradle.daemon=4' >> $HOME/.gradle/gradle.properties
+      ./gradlew -PdeploymentRepository=$CRAFT_PART_BUILD/deployment-repository build publishAllPublicationsToDeploymentRepository
+    override-stage: |
+      mkdir -p $CRAFT_PART_INSTALL/spring-framework
+      cp -r $CRAFT_PART_BUILD/deployment-repository/* $CRAFT_PART_INSTALL/spring-framework
+      craftctl default

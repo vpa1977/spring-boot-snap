@@ -1,0 +1,31 @@
+name: spring-boot-runtime-33
+base: bare
+build-base: core22
+version: '3.3.0'
+summary: Spring Boot framework runtime
+license: Apache-2.0
+description: |
+  Spring boot framework runtime version 3.3.0
+
+grade: devel
+confinement: strict
+
+parts:
+  spring-boot:
+    plugin: nil
+    source: https://github.com/spring-projects/spring-boot/
+    source-type: git
+    source-tag: v3.3.0
+    build-packages:
+      - openjdk-17-jdk-headless
+    override-build: |
+      mkdir -p $HOME/.gradle
+      echo 'systemProp.user.name=spring-builds+github' >> $HOME/.gradle/gradle.properties
+      echo 'systemProp.org.gradle.internal.launcher.welcomeMessageEnabled=false' >> $HOME/.gradle/gradle.properties
+      echo 'org.gradle.daemon=false' >> $HOME/.gradle/gradle.properties
+      echo 'org.gradle.daemon=4' >> $HOME/.gradle/gradle.properties
+      ./gradlew -PdeploymentRepository=$CRAFT_PART_BUILD/deployment-repository build publishAllPublicationsToDeploymentRepository
+    override-stage: |
+      mkdir -p $CRAFT_PART_INSTALL/spring-boot
+      cp -r $CRAFT_PART_BUILD/deployment-repository/* $CRAFT_PART_INSTALL/spring-boot
+      craftctl default
