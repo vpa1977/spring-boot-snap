@@ -26,6 +26,6 @@ parts:
       echo 'org.gradle.daemon=4' >> $HOME/.gradle/gradle.properties
       ./gradlew -PdeploymentRepository=$CRAFT_PART_BUILD/deployment-repository build publishAllPublicationsToDeploymentRepository
     override-stage: |
-      mkdir -p $CRAFT_PART_INSTALL/spring-framework
+      mkdir -p $CRAFT_PART_INSTALL/maven-repo
       cp -r $CRAFT_PART_BUILD/deployment-repository/* $CRAFT_PART_INSTALL/maven-repo
       craftctl default
