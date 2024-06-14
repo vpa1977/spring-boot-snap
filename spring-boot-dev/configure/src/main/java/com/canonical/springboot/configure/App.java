@@ -18,8 +18,10 @@
 package com.canonical.springboot.configure;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
@@ -39,7 +41,13 @@ public class App {
 
     private static String loadManifest() throws IOException {
         StringBuffer ret = new StringBuffer();
-        try (BufferedReader r = new BufferedReader(new FileReader("manifest/manifest.yaml"))) {
+        String where = System.getenv("SNAP");
+        if (where == null)
+            where = "";
+        else
+            where +="/";
+
+        try (BufferedReader r = new BufferedReader(new FileReader(where + "manifest/manifest.yaml"))) {
             String line;
             while ((line = r.readLine()) != null) {
                 ret.append(line);
@@ -109,9 +117,14 @@ public class App {
         if (!settings.addMavenProfile(snap))
             LOG.info(
                     "Spring boot profile '"+snap.name+"' is already present in maven user settings file");
-        else
+        else {
+            File settingsFile = new File(m2settings, "settings.xml");
+            try (BufferedWriter wr = new BufferedWriter(new FileWriter(settingsFile))) {
+                wr.write(settings.toXml());
+            }
             LOG.info(
                     "Spring boot profile '"+snap.name+"' was added to maven user settings file");
+        }
 
         LOG.info(
                 "This program will add '"+snap.name+".gradle' to ~/.gradle/init.d to configure Spring Boot maven repository.");
