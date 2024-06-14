@@ -1,7 +1,9 @@
 content-snaps:
-  spring-boot-33:
+  spring-boot-runtime-33:
     version: 3.3.0
     channel: latest/edge
-  spring-framework-61:
+    mount: /maven-repo
+  spring-framework-runtime-61:
     version: 6.1.8
     channel: latest/edge
+    mount: /maven-repo
