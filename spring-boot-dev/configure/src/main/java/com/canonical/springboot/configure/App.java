@@ -31,7 +31,6 @@ import org.apache.commons.logging.LogFactory;
  * @TODO i18n
  * @TODO handle maven user home
  * @TODO handle gradle user home
- * @TODO logging
  * @TODO mount under SNAP_COMMON
  */
 public class App {
@@ -109,21 +108,21 @@ public class App {
         Settings settings = new Settings(m2settings);
         if (!settings.addMavenProfile(snap))
             LOG.info(
-                    "Spring boot profile 'spring-boot-snap' is already present in maven user settings file");
+                    "Spring boot profile '"+snap.name+"' is already present in maven user settings file");
         else
             LOG.info(
-                    "Spring boot profile 'spring-boot-snap' was added to maven user settings file");
+                    "Spring boot profile '"+snap.name+"' was added to maven user settings file");
 
         LOG.info(
-                "This program will add 'springbootsnap.gradle' to ~/.gradle/init.d to configure Spring Boot maven repository.");
+                "This program will add '"+snap.name+".gradle' to ~/.gradle/init.d to configure Spring Boot maven repository.");
         File gradleInitDir = new File(
                 String.valueOf(Paths.get(System.getProperty("user.home"), ".gradle", "init.d")));
         GradleInit gradleInit = new GradleInit(gradleInitDir);
-        if (!gradleInit.addSpringBootInitFile())
-            LOG.info("Spring boot init file 'springbootsnap.gradle' was already added to "
+        if (!gradleInit.addGradletInitFile(snap))
+            LOG.info("Spring boot init file '"+snap.name+".gradle' was already added to "
                     + gradleInitDir.toString());
         else
-            LOG.info("Spring boot init file 'springbootsnap.gradle' was added to "
+            LOG.info("Spring boot init file '"+snap.name+".gradle' was added to "
                     + gradleInitDir.toString());
     }
 
