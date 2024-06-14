@@ -21,7 +21,7 @@ parts:
       craftctl default
     override-stage: |
       mkdir -p $CRAFT_PART_INSTALL/manifest
-      cp $CRAFT_PART_BUILD/manifest/manifest.yaml $CRAFT_PART_INSTALL/manifest
+      cp $SNAPCRAFT_PROJECT_DIR/manifest/manifest.yaml $CRAFT_PART_INSTALL/manifest
       mkdir -p $CRAFT_PART_INSTALL/install
       cp $CRAFT_PART_BUILD/target/configure-1.0-shaded.jar $CRAFT_PART_INSTALL/install/
       chmod +x $CRAFT_PART_INSTALL/install/configure-1.0-shaded.jar
