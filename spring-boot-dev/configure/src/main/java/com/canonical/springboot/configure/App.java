@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import org.apache.commons.cli.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @TODO i18n
@@ -33,6 +35,8 @@ import org.apache.commons.cli.*;
  * @TODO mount under SNAP_COMMON
  */
 public class App {
+
+    private static Log LOG = LogFactory.getLog(App.class);
 
     private static String loadManifest() throws IOException {
         StringBuffer ret = new StringBuffer();
@@ -79,57 +83,51 @@ public class App {
         var snaps = manifest.load(loadManifest());
         snaps = snaps.stream().filter(x -> x.name.equals(snapName)).collect(Collectors.toSet());
         if (snaps.size() != 1) {
-            System.out.println(snapName + " is not available");
+            LOG.error(snapName + " is not available");
             return;
         }
 
         Snap snap = snaps.iterator().next();
         if (snap.installed) {
-            System.out.println(snapName + " is already installed");
+            LOG.error(snapName + " is already installed");
             return;
         }
         // install snap
-        System.out.println("Running: snap install " + snapName + " --channel=" + snap.channel);
+        LOG.info("Running: snap install " + snapName + " --channel=" + snap.channel);
         ProcessBuilder pb =
                 new ProcessBuilder("snap", "install", snapName, "--channel=" + snap.channel);
         pb.inheritIO();
         Process p = pb.start();
         int exitCode = p.waitFor();
         if (exitCode != 0) {
-            System.out.println("Failed to install snap " + snapName);
+            LOG.error("Failed to install snap " + snapName);
         }
 
         // mount snap in snap common (how do we persist the mount????)
-
-
-        System.out.println(
-                "This program will update ~/.m2/settings.xml to include a Spring Boot snap maven repositories.");
         File m2settings =
                 new File(String.valueOf(Paths.get(System.getProperty("user.home"), ".m2")));
         Settings settings = new Settings(m2settings);
         if (!settings.addMavenProfile(snap))
-            System.out.println(
+            LOG.info(
                     "Spring boot profile 'spring-boot-snap' is already present in maven user settings file");
         else
-            System.out.println(
+            LOG.info(
                     "Spring boot profile 'spring-boot-snap' was added to maven user settings file");
 
-        System.out.println(
+        LOG.info(
                 "This program will add 'springbootsnap.gradle' to ~/.gradle/init.d to configure Spring Boot maven repository.");
         File gradleInitDir = new File(
                 String.valueOf(Paths.get(System.getProperty("user.home"), ".gradle", "init.d")));
         GradleInit gradleInit = new GradleInit(gradleInitDir);
         if (!gradleInit.addSpringBootInitFile())
-            System.out.println("Spring boot init file 'springbootsnap.gradle' was already added to "
+            LOG.info("Spring boot init file 'springbootsnap.gradle' was already added to "
                     + gradleInitDir.toString());
         else
-            System.out.println("Spring boot init file 'springbootsnap.gradle' was added to "
+            LOG.info("Spring boot init file 'springbootsnap.gradle' was added to "
                     + gradleInitDir.toString());
     }
 
     public static void main(String[] args) throws Throwable {
-
-        System.out.println("Snap common :" + System.getenv("SNAP_COMMON"));
 
         Options options = new Options();
         options.addOption("l", "list", false, "list installed content snaps");
@@ -153,6 +151,5 @@ public class App {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("install", options);
         }
-
     }
 }
