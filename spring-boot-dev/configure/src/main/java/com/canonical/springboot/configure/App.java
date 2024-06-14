@@ -107,7 +107,7 @@ public class App {
         File m2settings =
                 new File(String.valueOf(Paths.get(System.getProperty("user.home"), ".m2")));
         Settings settings = new Settings(m2settings);
-        if (!settings.addSpringBootProfile())
+        if (!settings.addMavenProfile(snap))
             System.out.println(
                     "Spring boot profile 'spring-boot-snap' is already present in maven user settings file");
         else

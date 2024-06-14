@@ -46,45 +46,45 @@ import org.xml.sax.SAXException;
  */
 public class Settings {
 
-    private static final String SPRING_BOOT_PROFILE =
-    """
-        <profile>
-        <id>spring-boot-snap</id>
-        <activation>
-          <activeByDefault>true</activeByDefault>
-        </activation>
-        <repositories>
-          <repository>
-            <id>local-spring-boot</id>
-            <name>Spring Boot</name>
-            <snapshots>
-              <enabled>true</enabled>
-            </snapshots>
-            <releases>
-              <enabled>true</enabled>
-              <updatePolicy>always</updatePolicy>
-            </releases>
-            <url>file:///snap/spring-boot/current/maven-repo/</url>
-            <layout>default</layout>
-          </repository>
-        </repositories>
-        <pluginRepositories>
-          <pluginRepository>
-            <id>spring-boot-plugins</id>
-            <name>Spring Boot plugins</name>
-            <releases>
-              <enabled>true</enabled>
-            </releases>
-            <url>file:///snap/spring-boot/current/maven-repo/</url>
-          </pluginRepository>
-        </pluginRepositories>
-      </profile>
-            """;
+    private static final String SPRING_BOOT_PROFILE = """
+              <profile>
+              <id>%s</id>
+              <activation>
+                <activeByDefault>true</activeByDefault>
+              </activation>
+              <repositories>
+                <repository>
+                  <id>local-%s</id>
+                  <name>%s</name>
+                  <snapshots>
+                    <enabled>true</enabled>
+                  </snapshots>
+                  <releases>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                  </releases>
+                  <url>file:///snap/%s/current/maven-repo/</url>
+                  <layout>default</layout>
+                </repository>
+              </repositories>
+              <pluginRepositories>
+                <pluginRepository>
+                  <id>%s-plugins</id>
+                  <name>%s plugins</name>
+                  <releases>
+                    <enabled>true</enabled>
+                  </releases>
+                  <url>file:///snap/%s/current/maven-repo/</url>
+                </pluginRepository>
+              </pluginRepositories>
+            </profile>
+                  """;
 
     private Document m_settings;
     private DocumentBuilder m_builder;
 
-    public Settings(File settingsDir) throws ParserConfigurationException, SAXException, IOException {
+    public Settings(File settingsDir)
+            throws ParserConfigurationException, SAXException, IOException {
         m_builder = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder();
         if (!settingsDir.exists() && !settingsDir.mkdirs())
             throw new IOException("Unable to create the settings directory");
@@ -121,12 +121,12 @@ public class Settings {
         return wr.toString();
     }
 
-    public boolean addSpringBootProfile() throws XPathExpressionException,  IllegalArgumentException, SAXException, IOException {
+    public boolean addMavenProfile(Snap snap)
+            throws XPathExpressionException, IllegalArgumentException, SAXException, IOException {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        String existingProfile = "/settings/profiles/profile/id[. ='spring-boot-snap']";
+        String existingProfile = "/settings/profiles/profile/id[. ='" + snap.name + "']";
         String expression = "/settings/profiles";
-        Node snapProfile =
-                (Node) xpath.evaluate(existingProfile, m_settings, XPathConstants.NODE);
+        Node snapProfile = (Node) xpath.evaluate(existingProfile, m_settings, XPathConstants.NODE);
         if (snapProfile != null) {
             return false;
         }
@@ -134,7 +134,19 @@ public class Settings {
         if (profilesNode == null) {
             throw new IllegalArgumentException("profiles node is not found");
         }
-        Element fragment = m_builder.parse(new ByteArrayInputStream(SPRING_BOOT_PROFILE.getBytes())).getDocumentElement();
+        String profile = String.format(SPRING_BOOT_PROFILE,
+        // main repo
+        snap.name, // id
+        snap.name, // local-id
+        snap.name, // name of the repository - new field in manifest?
+        snap.name, // path segment
+        // plugin repo
+        snap.name, // id
+        snap.name, // name of the repository - new field in manifest?
+        snap.name // path segment
+        );
+        Element fragment = m_builder.parse(new ByteArrayInputStream(profile.getBytes()))
+                .getDocumentElement();
         profilesNode.appendChild(m_settings.adoptNode(fragment));
         return true;
     }
