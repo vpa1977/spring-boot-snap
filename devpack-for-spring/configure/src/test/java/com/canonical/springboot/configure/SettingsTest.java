@@ -1,5 +1,5 @@
 /*
- * This file is part of Spring Boot snap.
+ * This file is part of Devpack for Spring® snap.
  *
  * Copyright 2024 Canonical Ltd.
  *

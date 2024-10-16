@@ -1,21 +1,27 @@
-name: spring-framework-runtime-61
+name: content-for-spring-boot-33
 base: bare
 build-base: core22
-version: '6.1.8'
-summary: Spring Boot framework runtime
+version: '3.3.0'
+summary: Rebuild of Spring® Boot Framework source
 license: Apache-2.0
 description: |
-  Spring framework runtime
+  Rebuild of Spring® Boot version 3.3.0.
+
+  Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
+
 
 grade: devel
 confinement: strict
 
 parts:
-  spring-framework:
+  spring-boot:
     plugin: nil
-    source: https://github.com/spring-projects/spring-framework/
+    source: https://github.com/spring-projects/spring-boot/
     source-type: git
-    source-tag: v6.1.8
+    source-tag: v3.3.0
+#   how can I build with private snap?
+#   build-snaps:
+#      - spring-framework-runtime-61/latest/edge
     build-packages:
       - openjdk-17-jdk-headless
     override-build: |

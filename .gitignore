@@ -1,5 +1,5 @@
 *.snap
 .vscode
-spring-boot-dev/configure/.vscode
-spring-boot-dev/configure/target
-spring-boot-dev/configure/dependency-reduced-pom.xml
+devpack-for-spring/configure/.vscode
+devpack-for-spring/configure/target
+devpack-for-spring/configure/dependency-reduced-pom.xml

@@ -1,10 +1,15 @@
-name: spring-boot-dev
+name: devpack-for-spring
 base: core22
 version: '0.02'
-summary: Spring Boot framework development tools
+summary: Development tools for Spring® projects
 license: Apache-2.0
 description: |
-  Spring boot framework development tools
+  Development tools for Spring® projects.
+
+  The snap packages spring-cli and spring-boot-cli.
+  The snap provides an utility to install binaries of Spring projects rebuilds.
+
+  Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: classic # use 'strict' once you have the right plugs and slots
