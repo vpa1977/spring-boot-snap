@@ -1,4 +1,4 @@
-# Spring Boot snap prototype
+# Prototype Devpack for Spring™ Projects
 
 ## Introduction
 
@@ -35,15 +35,5 @@ This tool provides a set of commands to create, manage and run day-to-day tasks 
 
 `` spring-boot-dev.spring-cli boot add jpa``
 
-3. AI-assisted code generation using OpenAI [ note: not tested ]
 
-3.1 Generate a new API key at https://platform.openai.com/api-keys and store it to file
-
-```
-echo OPEN_AI_API_KEY=<you-key> > ~/.openai
-chmod 0600 ~/.openai
-```
-
-3.2 Generate changes using
-
-`` spring-boot-dev.spring-cli ai add --description '<openai prompt>' --preview ``
+_Spring is a trademark of Broadcom Inc. and/or its subsidiaries._
