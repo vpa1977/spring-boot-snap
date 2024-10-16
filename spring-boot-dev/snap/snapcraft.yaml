@@ -1,6 +1,6 @@
 name: spring-boot-dev
 base: core22
-version: '0.01'
+version: '0.02'
 summary: Spring Boot framework development tools
 license: Apache-2.0
 description: |
