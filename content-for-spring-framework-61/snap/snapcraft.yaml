@@ -1,11 +1,11 @@
 name: content-for-spring-framework-61
 base: bare
 build-base: core22
-version: '6.1.8'
+version: '6.1.13'
 summary: Rebuild of Spring Boot Framework source
 license: Apache-2.0
 description: |
-  Rebuild of Spring® Framework version 6.1.8.
+  Rebuild of Spring® Framework version 6.1.13.
 
   Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
 
@@ -17,7 +17,7 @@ parts:
     plugin: nil
     source: https://github.com/spring-projects/spring-framework/
     source-type: git
-    source-tag: v6.1.8
+    source-tag: v6.1.13
     build-packages:
       - openjdk-17-jdk-headless
     override-build: |
