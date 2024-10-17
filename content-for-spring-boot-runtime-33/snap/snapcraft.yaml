@@ -1,4 +1,4 @@
-name: content-for-spring-boot-33
+name: content-for-spring-boot-runtime-33
 base: bare
 build-base: core22
 version: '3.3.4'
