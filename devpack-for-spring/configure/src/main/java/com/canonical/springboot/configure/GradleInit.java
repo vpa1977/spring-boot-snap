@@ -52,8 +52,6 @@ public class GradleInit {
     private File m_gradleInitDir;
 
     public GradleInit(File gradleInitDir) throws IOException {
-        if (gradleInitDir.exists())
-            return;
         gradleInitDir.mkdirs();
         m_gradleInitDir = gradleInitDir;
     }
@@ -63,7 +61,7 @@ public class GradleInit {
         if (settings.exists())
             return false;
         String initString = String.format(GRADLE_INIT_STRING, snap.name, snap.name);
-        Files.writeString(settings.toPath(), GRADLE_INIT_STRING, StandardOpenOption.CREATE_NEW);
+        Files.writeString(settings.toPath(), initString, StandardOpenOption.CREATE_NEW);
         return true;
     }
 
