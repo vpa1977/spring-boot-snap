@@ -18,11 +18,14 @@
 package com.canonical.springboot.configure;
 
 
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Test;
+
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.Assert;
-import org.junit.Test;
-import static org.hamcrest.CoreMatchers.*;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class ManifestTest extends Manifest {
@@ -43,9 +46,9 @@ public class ManifestTest extends Manifest {
         HashSet<Snap> expected = new HashSet<Snap>();
         expected.add(new Snap("spring-boot-33", "latest/edge", "/foo", false));
         expected.add(new Snap("spring-framework-61", "latest/edge", "/foo", false));
-        Assert.assertThat(snaps, is(expected));
+        MatcherAssert.assertThat(snaps, is(expected));
         Snap snap = snaps.iterator().next();
-        Assert.assertEquals("latest/edge", snap.channel);
-        Assert.assertEquals("/foo", snap.mount);
+        assertEquals("latest/edge", snap.channel);
+        assertEquals("/foo", snap.mount);
     }
 }

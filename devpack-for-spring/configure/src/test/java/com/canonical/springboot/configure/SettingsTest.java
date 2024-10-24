@@ -17,11 +17,14 @@
 
 package com.canonical.springboot.configure;
 
-import java.io.FileWriter;
+import org.junit.jupiter.api.Test;
+
 import java.io.BufferedWriter;
 import java.io.File;
-import org.junit.Assert;
-import org.junit.Test;
+import java.io.FileWriter;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class SettingsTest {
     @Test
@@ -31,7 +34,7 @@ public class SettingsTest {
         File settingsFile = new File(f, "settings.xml");
 
         Settings settings = new Settings(f);
-        Assert.assertEquals(
+        assertEquals(
                 """
                         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
                         <settings xmlns="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
@@ -44,7 +47,7 @@ public class SettingsTest {
         }
 
         Settings other = new Settings(f);
-        Assert.assertEquals(settings.toXml(), other.toXml());
+        assertEquals(settings.toXml(), other.toXml());
         f.delete();
     }
 
@@ -55,12 +58,12 @@ public class SettingsTest {
         f.delete();
         File settingsFile = new File(f, "settings.xml");
         Settings settings = new Settings(f);
-        Assert.assertTrue(settings.addMavenProfile(snap));
+        assertTrue(settings.addMavenProfile(snap));
         try (BufferedWriter wr = new BufferedWriter(new FileWriter(settingsFile))) {
             wr.write(settings.toXml());
         }
         Settings other = new Settings(f);
-        Assert.assertFalse(other.addMavenProfile(snap));
+        assertFalse(other.addMavenProfile(snap));
         f.delete();
     }
 }
