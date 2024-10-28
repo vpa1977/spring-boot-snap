@@ -124,7 +124,7 @@ public class Settings {
     public boolean addMavenProfile(Snap snap)
             throws XPathExpressionException, IllegalArgumentException, SAXException, IOException {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        String existingProfile = "/settings/profiles/profile/id[. ='" + snap.name + "']";
+        String existingProfile = "/settings/profiles/profile/id[. ='" + snap.name() + "']";
         String expression = "/settings/profiles";
         Node snapProfile = (Node) xpath.evaluate(existingProfile, m_settings, XPathConstants.NODE);
         if (snapProfile != null) {
@@ -136,14 +136,14 @@ public class Settings {
         }
         String profile = String.format(SPRING_BOOT_PROFILE,
         // main repo
-        snap.name, // id
-        snap.name, // local-id
-        snap.name, // name of the repository - new field in manifest?
-        snap.name, // path segment
+        snap.name(), // id
+        snap.name(), // local-id
+        snap.name(), // name of the repository - new field in manifest?
+        snap.name(), // path segment
         // plugin repo
-        snap.name, // id
-        snap.name, // name of the repository - new field in manifest?
-        snap.name // path segment
+        snap.name(), // id
+        snap.name(), // name of the repository - new field in manifest?
+        snap.name() // path segment
         );
         Element fragment = m_builder.parse(new ByteArrayInputStream(profile.getBytes()))
                 .getDocumentElement();

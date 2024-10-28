@@ -60,7 +60,7 @@ public class App {
     private static void list(final boolean installed) throws IOException {
         var manifest = new Manifest();
         var snaps = manifest.load(loadManifest());
-        snaps = snaps.stream().filter(x -> installed == x.installed).collect(Collectors.toSet());
+        snaps = snaps.stream().filter(x -> installed == x.installed()).collect(Collectors.toSet());
         if (snaps.isEmpty()) {
             System.out.println("\t None");
             return;
@@ -68,7 +68,7 @@ public class App {
         var iter = snaps.iterator();
         while (iter.hasNext()) {
             var item = iter.next();
-            System.out.println("\t- " + item.name + " channel " + item.channel);
+            System.out.println("\t- " + item.name() + " channel " + item.channel());
         }
     }
 
@@ -88,21 +88,21 @@ public class App {
         // find snap in manifest
         var manifest = new Manifest();
         var snaps = manifest.load(loadManifest());
-        snaps = snaps.stream().filter(x -> x.name.equals(snapName)).collect(Collectors.toSet());
+        snaps = snaps.stream().filter(x -> x.name().equals(snapName)).collect(Collectors.toSet());
         if (snaps.size() != 1) {
             LOG.error(snapName + " is not available");
             return;
         }
 
         Snap snap = snaps.iterator().next();
-        if (snap.installed) {
+        if (snap.installed()) {
             LOG.error(snapName + " is already installed");
             return;
         }
         // install snap
-        LOG.info("Running: snap install " + snapName + " --channel=" + snap.channel);
+        LOG.info("Running: snap install " + snapName + " --channel=" + snap.channel());
         ProcessBuilder pb =
-                new ProcessBuilder("snap", "install", snapName, "--channel=" + snap.channel);
+                new ProcessBuilder("snap", "install", snapName, "--channel=" + snap.channel());
         pb.inheritIO();
         Process p = pb.start();
         int exitCode = p.waitFor();
@@ -116,26 +116,26 @@ public class App {
         Settings settings = new Settings(m2settings);
         if (!settings.addMavenProfile(snap))
             LOG.info(
-                    "Spring boot profile '"+snap.name+"' is already present in maven user settings file");
+                    "Spring boot profile '"+snap.name()+"' is already present in maven user settings file");
         else {
             File settingsFile = new File(m2settings, "settings.xml");
             try (BufferedWriter wr = new BufferedWriter(new FileWriter(settingsFile))) {
                 wr.write(settings.toXml());
             }
             LOG.info(
-                    "Spring boot profile '"+snap.name+"' was added to maven user settings file");
+                    "Spring boot profile '"+snap.name()+"' was added to maven user settings file");
         }
 
         LOG.info(
-                "This program will add '"+snap.name+".gradle' to ~/.gradle/init.d to configure Spring Boot maven repository.");
+                "This program will add '"+snap.name()+".gradle' to ~/.gradle/init.d to configure Spring Boot maven repository.");
         File gradleInitDir = new File(
                 String.valueOf(Paths.get(System.getProperty("user.home"), ".gradle", "init.d")));
         GradleInit gradleInit = new GradleInit(gradleInitDir);
         if (!gradleInit.addGradletInitFile(snap))
-            LOG.info("Spring boot init file '"+snap.name+".gradle' was already added to "
+            LOG.info("Spring boot init file '"+snap.name()+".gradle' was already added to "
                     + gradleInitDir.toString());
         else
-            LOG.info("Spring boot init file '"+snap.name+".gradle' was added to "
+            LOG.info("Spring boot init file '"+snap.name()+".gradle' was added to "
                     + gradleInitDir.toString());
     }
 

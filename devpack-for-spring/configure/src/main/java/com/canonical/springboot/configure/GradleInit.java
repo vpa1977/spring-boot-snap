@@ -57,10 +57,10 @@ public class GradleInit {
     }
 
     public boolean addGradletInitFile(Snap snap) throws IOException {
-        File settings = new File(m_gradleInitDir, snap.name + ".gradle");
+        File settings = new File(m_gradleInitDir, snap.name() + ".gradle");
         if (settings.exists())
             return false;
-        String initString = String.format(GRADLE_INIT_STRING, snap.name, snap.name);
+        String initString = String.format(GRADLE_INIT_STRING, snap.name(), snap.name());
         Files.writeString(settings.toPath(), initString, StandardOpenOption.CREATE_NEW);
         return true;
     }

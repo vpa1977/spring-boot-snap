@@ -16,26 +16,8 @@
  */
 package com.canonical.springboot.configure;
 
-import lombok.NonNull;
 
-public class Snap {
-
-    @NonNull
-    public String name;
-    @NonNull
-    public String channel;
-    @NonNull
-    public String mount;
-
-    public boolean installed;
-
-    public Snap(@NonNull String name, @NonNull String channel, @NonNull String mount,
-            boolean installed) {
-        this.name = name;
-        this.installed = installed;
-        this.channel = channel;
-        this.mount = mount;
-    }
+public record Snap(String name, String channel, String mount, boolean installed) {
 
     @Override
     public int hashCode() {
