@@ -34,21 +34,21 @@ public class ManifestTest extends Manifest {
     public void testLoadManifest() throws Exception {
         String manifest = """
                 content-snaps:
-                  spring-boot-33:
+                  content-for-spring-boot-33:
                     channel: latest/edge
                     mount: /foo
-                  spring-framework-61:
+                  content-for-spring-framework-61:
                     channel: latest/edge
                     mount: /foo
                                 """;
 
         Set<Snap> snaps = super.load(manifest);
         HashSet<Snap> expected = new HashSet<Snap>();
-        expected.add(new Snap("spring-boot-33", "latest/edge", "/foo", false));
-        expected.add(new Snap("spring-framework-61", "latest/edge", "/foo", false));
+        expected.add(new Snap("content-for-spring-boot-33", "latest/edge", "/foo", false));
+        expected.add(new Snap("content-for-spring-framework-61", "latest/edge", "/foo", false));
         MatcherAssert.assertThat(snaps, is(expected));
         Snap snap = snaps.iterator().next();
-        assertEquals("latest/edge", snap.channel);
-        assertEquals("/foo", snap.mount);
+        assertEquals("latest/edge", snap.channel());
+        assertEquals("/foo", snap.mount());
     }
 }
