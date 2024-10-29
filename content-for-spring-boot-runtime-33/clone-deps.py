@@ -50,6 +50,8 @@ def processVersion(group, artifect, artifect_dir, version):
             src_file_path = hash_dir + "/" + file
             dst_file_path = version_dir + "/" + file
             copyfile(src_file_path, dst_file_path)
+            with open(dst_file_path + ".sha1", "w") as sha_file:
+                sha_file.write(hash.zfill(40))
     return
 
 groups = os.listdir(src)
