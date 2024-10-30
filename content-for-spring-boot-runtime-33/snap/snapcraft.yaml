@@ -1,7 +1,7 @@
 name: content-for-spring-boot-runtime-33
 base: bare
 build-base: core22
-version: '3.3.4'
+version: '3.3.5'
 summary: Rebuild of Spring® Boot Framework source
 license: Apache-2.0
 description: |
@@ -18,10 +18,7 @@ parts:
     plugin: nil
     source: https://github.com/spring-projects/spring-boot/
     source-type: git
-    source-tag: v3.3.4
-#   how can I build with private snap?
-#   build-snaps:
-#      - spring-framework-runtime-61/latest/edge
+    source-tag: v3.3.5
     build-packages:
       - openjdk-17-jdk-headless
     override-build: |
