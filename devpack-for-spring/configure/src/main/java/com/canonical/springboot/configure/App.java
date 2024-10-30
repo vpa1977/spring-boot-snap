@@ -87,6 +87,16 @@ public class App {
         list(false);
     }
 
+    private static void refresh() throws Throwable {
+        var manifest = new Manifest();
+        var snaps = manifest.load(loadManifest());
+        for (var snap : snaps) {
+            if (!snap.installed())
+                continue;
+            populateCache(snap);
+        }
+    }
+
     private static void install(final String snapName) throws Throwable {
 
         // read manifest
@@ -180,6 +190,9 @@ public class App {
                 .desc("install a content snap").build();
         options.addOption(installOption);
 
+        Option refreshOption = Option.builder("r").longOpt("refresh").desc("populate local Maven repository").build();
+        options.addOption(refreshOption);
+
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
@@ -190,6 +203,8 @@ public class App {
         } else if (cmd.hasOption("i")) {
             String snap = cmd.getOptionValue("i");
             install(snap);
+        } else if (cmd.hasOption("r")) {
+            refresh();
         } else {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("install", options);
