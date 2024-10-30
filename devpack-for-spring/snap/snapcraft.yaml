@@ -9,6 +9,9 @@ description: |
   The snap packages spring-cli and spring-boot-cli.
   The snap provides an utility to install binaries of Spring projects rebuilds.
 
+  Snap documentation:
+  https://github.com/vpa1977/spring-boot-snap/blob/main/devpack-for-spring/README.md
+
   Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
@@ -61,6 +64,11 @@ parts:
       mkdir -p $CRAFT_PART_INSTALL/spring-boot-cli
       tar xvf $CRAFT_PART_BUILD/spring-boot-project/spring-boot-tools/spring-boot-cli/build/distributions/spring-boot-cli-3.2.4-bin.tar.gz --strip-components 1 -C $CRAFT_PART_INSTALL/spring-boot-cli
       craftctl default
+
+  rockcraft:
+    plugin: nil
+    stage-snaps:
+      - rockcraft
 
 apps:
   install:
