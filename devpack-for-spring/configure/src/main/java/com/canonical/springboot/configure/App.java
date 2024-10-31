@@ -127,7 +127,6 @@ public class App {
 
         setupMaven(snap);
         setupGradle(snap);
-        populateCache(snap);
     }
 
     private static void populateCache(Snap snap) throws IOException {
