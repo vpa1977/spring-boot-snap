@@ -22,8 +22,8 @@ case ${command} in
     spring-cli)
         devpack-for-spring.spring-cli $*
     ;;
-    spring-boot-cli)
-        devpack-for-spring.spring-boot-cli $*
+    spring)
+        devpack-for-spring.spring $*
     ;;
     *)
         cat $SNAP/info.txt

@@ -100,7 +100,7 @@ apps:
   local-maven:
     command: install.sh -r
 
-  spring-boot-cli:
+  spring:
     command: spring-boot-cli/bin/spring
 
   spring-cli:
