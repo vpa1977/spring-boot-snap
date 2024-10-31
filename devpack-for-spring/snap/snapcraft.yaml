@@ -79,6 +79,10 @@ parts:
       - enable-patchelf
     stage-packages:
       - openjdk-21-jdk-headless
+    override-build: |
+      craftctl default
+      (cd $CRAFT_PART_INSTALL && mkdir -p usr/bin && ln -sf --relative usr/lib/jvm/java-21-openjdk-${CRAFT_ARCH_BUILD_FOR}/bin/java usr/bin/java)
+
 
 apps:
   devpack-for-spring:
