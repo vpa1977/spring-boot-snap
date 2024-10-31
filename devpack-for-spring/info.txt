@@ -1,0 +1,8 @@
+
+Available commands:
+- install         - install a content snap for Spring libraries.
+- available       - list available content snaps for Spring libraries.
+- list            - list installed content snaps for Spring libraries.
+- spring-cli      - run Spring CLI.
+- spring-boot-cli - run Spring Boot CLI.
+
