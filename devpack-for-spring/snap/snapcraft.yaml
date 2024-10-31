@@ -1,6 +1,6 @@
 name: devpack-for-spring
 base: core22
-version: '0.04'
+version: '0.05'
 summary: Development tools for Spring® projects
 license: Apache-2.0
 description: |
