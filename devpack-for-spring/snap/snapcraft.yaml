@@ -1,6 +1,6 @@
 name: devpack-for-spring
 base: core22
-version: '0.05'
+version: '0.06'
 summary: Development tools for Spring® projects
 license: Apache-2.0
 description: |
@@ -33,6 +33,8 @@ parts:
       mkdir -p $CRAFT_PART_INSTALL/install
       cp $CRAFT_PART_BUILD/target/configure-1.0-shaded.jar $CRAFT_PART_INSTALL/install/
       chmod +x $CRAFT_PART_INSTALL/install/configure-1.0-shaded.jar
+      cp $CRAFT_PROJECT_DIR/install.sh $CRAFT_PART_INSTALL/
+      chmod +x $CRAFT_PART_INSTALL/install.sh
       craftctl default
 
   spring-cli:
@@ -65,14 +67,34 @@ parts:
       tar xvf $CRAFT_PART_BUILD/spring-boot-project/spring-boot-tools/spring-boot-cli/build/distributions/spring-boot-cli-3.2.4-bin.tar.gz --strip-components 1 -C $CRAFT_PART_INSTALL/spring-boot-cli
       craftctl default
 
-  rockcraft:
+  devpack-for-spring:
     plugin: nil
-    stage-snaps:
-      - rockcraft
+    override-build: |
+      cp $CRAFT_PROJECT_DIR/info.* $CRAFT_PART_INSTALL/
+      craftctl default
+
+  java-runtime:
+    plugin: nil
+    build-attributes:
+      - enable-patchelf
+    stage-packages:
+      - openjdk-21-jdk-headless
 
 apps:
+  devpack-for-spring:
+    command: info.sh
+
+  available:
+    command: install.sh -a
+
+  list:
+    command: install.sh -l
+
   install:
-    command: install/configure-1.0-shaded.jar
+    command: install.sh -i
+
+  local-maven:
+    command: install.sh -r
 
   spring-boot-cli:
     command: spring-boot-cli/bin/spring
