@@ -11,13 +11,13 @@ The snap uses classic confinement and requires Java to be present in the PATH.
 
 ## Applications
 
-### spring-boot-cli
+### spring
 
-`devpack-for-spring.spring-boot-cli` invokes [Spring Boot CLI](https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html).
+`devpack-for-spring.spring` invokes [Spring Boot CLI](https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html).
 
 It can be used to initialize a new Spring Boot project, e.g.
 
-`devpack-for-spring.spring-boot-cli init --dependencies=web,data-jpa my-project`
+`devpack-for-spring.spring init --dependencies=web,data-jpa my-project`
 
 ### spring-cli
 
@@ -25,11 +25,27 @@ It can be used to initialize a new Spring Boot project, e.g.
 
 This tool provides a set of commands to create, manage and run day-to-day tasks on the Java project.
 
+### available
+
+`devpack-for-spring.available` lists avaiable content snaps for Spring projects.
+
+### install
+
+`devpack-for-spring.install` install a content snap for a Spring project.
+
+### list
+
+`devpack-for-spring.list` list installed content snaps.
+
+### local-maven
+
+`devpack-for-spring.local-maven` install content snaps into a local Maven repository.
+
 ## Sample
 
-1. Create a project with `devpack-for-spring.spring-boot-cli`
+1. Create a project with `devpack-for-spring.spring`
 
-`` $ devpack-for-spring.spring-boot-cli init --build=maven --java-version=21 --dependencies=ws --packaging=jar sample ``
+`` $ devpack-for-spring.spring init --build=maven --java-version=21 --dependencies=ws --packaging=jar sample ``
 
 2. Add JPA sample code from the standard catalog using `devpack-for-spring.spring-cli`
 
