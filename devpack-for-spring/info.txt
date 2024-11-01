@@ -3,6 +3,7 @@ Devpack for Spring available commands:
 - install         - install a content snap for Spring libraries.
 - available       - list available content snaps for Spring libraries.
 - list            - list installed content snaps for Spring libraries.
+- local-maven     - install content snaps into local Maven repository.
 - spring          - run Spring Boot CLI.
 - spring-cli      - run Spring CLI.
 
