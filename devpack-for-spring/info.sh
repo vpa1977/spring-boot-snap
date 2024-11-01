@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo DevPack for Spring
-
 command=$1
 if [ -z $command ]; then
     cat $SNAP/info.txt
