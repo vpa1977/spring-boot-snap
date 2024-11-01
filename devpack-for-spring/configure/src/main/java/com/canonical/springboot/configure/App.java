@@ -193,20 +193,24 @@ public class App {
         options.addOption(refreshOption);
 
         CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, args);
-
-        if (cmd.hasOption("l")) {
-            listInstalled();
-        } else if (cmd.hasOption("a")) {
-            listAvailable();
-        } else if (cmd.hasOption("i")) {
-            String snap = cmd.getOptionValue("i");
-            install(snap);
-        } else if (cmd.hasOption("r")) {
-            refresh();
-        } else {
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("install", options);
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption("l")) {
+                listInstalled();
+            } else if (cmd.hasOption("a")) {
+                listAvailable();
+            } else if (cmd.hasOption("i")) {
+                String snap = cmd.getOptionValue("i");
+                install(snap);
+            } else if (cmd.hasOption("r")) {
+                refresh();
+            } else {
+                HelpFormatter formatter = new HelpFormatter();
+                formatter.printHelp("install", options);
+            }
+        } catch (ParseException e) {
+            System.out.println("usage: install <snap-name>");
+            System.exit(-1);
         }
     }
 }
