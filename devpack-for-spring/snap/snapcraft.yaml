@@ -88,9 +88,6 @@ apps:
   devpack-for-spring:
     command: info.sh
 
-  available:
-    command: install.sh -a
-
   list:
     command: install.sh -l
 

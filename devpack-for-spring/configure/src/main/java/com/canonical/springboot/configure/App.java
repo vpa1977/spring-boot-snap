@@ -77,12 +77,9 @@ public class App {
         }
     }
 
-    private static void listInstalled() throws IOException {
+    private static void list() throws IOException {
         System.out.println("Installed content snaps:");
         list(true);
-    }
-
-    private static void listAvailable() throws IOException {
         System.out.println("Available content snaps:");
         list(false);
     }
@@ -183,7 +180,6 @@ public class App {
 
         Options options = new Options();
         options.addOption("l", "list", false, "list installed content snaps");
-        options.addOption("a", "available", false, "list available content snaps");
 
         Option installOption = Option.builder("i").longOpt("install").argName("snap").hasArg()
                 .desc("install a content snap").build();
@@ -196,9 +192,7 @@ public class App {
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption("l")) {
-                listInstalled();
-            } else if (cmd.hasOption("a")) {
-                listAvailable();
+                list();
             } else if (cmd.hasOption("i")) {
                 String snap = cmd.getOptionValue("i");
                 install(snap);
