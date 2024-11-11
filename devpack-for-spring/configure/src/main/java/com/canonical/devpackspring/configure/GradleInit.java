@@ -15,7 +15,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.canonical.springboot.configure;
+package com.canonical.devpackspring.configure;
 
 import java.io.File;
 import java.io.IOException;

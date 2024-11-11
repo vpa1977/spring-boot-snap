@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.canonical.springboot.configure;
+package com.canonical.devpackspring.configure;
 
 public record SnapDescription(String description, String version) {
 }

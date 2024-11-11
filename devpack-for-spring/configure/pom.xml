@@ -86,7 +86,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.canonical.springboot.configure.App</mainClass>
+                                    <mainClass>com.canonical.devpackspring.configure.App</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
