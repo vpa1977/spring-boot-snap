@@ -70,10 +70,10 @@ public class App {
             System.out.println("\t None");
             return;
         }
-        var iter = snaps.iterator();
-        while (iter.hasNext()) {
-            var item = iter.next();
-            System.out.println("\t- " + item.name() + " channel " + item.channel());
+        for (var item : snaps) {
+            SnapDescription desc = StoreApi.querySnap(item.name(), item.channel());
+            System.out.println("\t- " + item.name() + " channel " + item.channel() + " version "+ desc.version());
+            System.out.println("\t  " + desc.description());
         }
     }
 

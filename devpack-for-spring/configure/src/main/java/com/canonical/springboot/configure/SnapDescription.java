@@ -16,23 +16,5 @@
  */
 package com.canonical.springboot.configure;
 
-public record Snap(String name, String channel, String mount, boolean installed) {
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == null)
-            return false;
-        if (other instanceof Snap) {
-            var otherSnap = (Snap) other;
-            if (name.equals(otherSnap.name)) {
-                return true;
-            }
-        }
-        return false;
-    }
+public record SnapDescription(String description, String version) {
 }

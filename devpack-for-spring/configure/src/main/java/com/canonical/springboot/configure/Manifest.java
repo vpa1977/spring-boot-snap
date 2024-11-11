@@ -30,7 +30,6 @@ public class Manifest {
     public static final String SNAP = "/snap/";
     private static final String CONTENT_SNAPS = "content-snaps";
 
-
     private boolean isInstalled(String name) {
         return new File(SNAP + name + "/current/").exists();
     }

@@ -16,23 +16,16 @@
  */
 package com.canonical.springboot.configure;
 
-public record Snap(String name, String channel, String mount, boolean installed) {
+import org.junit.jupiter.api.Test;
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    @Override
-    public boolean equals(Object other) {
-        if (other == null)
-            return false;
-        if (other instanceof Snap) {
-            var otherSnap = (Snap) other;
-            if (name.equals(otherSnap.name)) {
-                return true;
-            }
-        }
-        return false;
+public class StoreApiTest {
+    @Test
+    public void testAccessInfo(){
+        var description = StoreApi.querySnap("content-for-spring-boot-runtime-33", "latest/edge");
+        assertNotNull(description.description());
+        assertNotEquals("Unknown", description.version());
     }
 }
