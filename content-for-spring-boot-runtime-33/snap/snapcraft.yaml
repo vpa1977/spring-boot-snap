@@ -2,10 +2,10 @@ name: content-for-spring-boot-runtime-33
 base: bare
 build-base: core22
 version: '3.3.5'
-summary: Rebuild of Spring® Boot Framework source
+summary: Rebuild of Spring® Boot Framework sources
 license: Apache-2.0
 description: |
-  Rebuild of Spring® Boot version 3.3.4.
+  Rebuild of Spring® Boot sources.
 
   Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
 

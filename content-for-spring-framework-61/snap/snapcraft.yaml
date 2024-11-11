@@ -2,10 +2,10 @@ name: content-for-spring-framework-61
 base: bare
 build-base: core22
 version: '6.1.14'
-summary: Rebuild of Spring Boot Framework source
+summary: Rebuild of Spring® Framework sources
 license: Apache-2.0
 description: |
-  Rebuild of Spring® Framework version 6.1.13.
+  Rebuild of Spring® Framework sources.
 
   Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
 
