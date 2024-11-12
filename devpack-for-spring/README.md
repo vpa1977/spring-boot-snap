@@ -25,17 +25,13 @@ It can be used to initialize a new Spring Boot project, e.g.
 
 This tool provides a set of commands to create, manage and run day-to-day tasks on the Java project.
 
-### available
-
-`devpack-for-spring.available` lists avaiable content snaps for Spring projects.
-
 ### install
 
 `devpack-for-spring.install` install a content snap for a Spring project.
 
 ### list
 
-`devpack-for-spring.list` list installed content snaps.
+`devpack-for-spring.list` lists available and installed content snaps.
 
 ### local-maven
 
