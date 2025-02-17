@@ -1,0 +1,15 @@
+project: devpack-for-spring
+
+backends:
+  lxd:
+    systems:
+      - ubuntu-24.04
+
+path: /home/test
+
+suites:
+  tests/spread/:
+    summary: integration tests
+
+prepare: |
+  find . -name *.snap -exec snap install --dangerous --classic {} \;
