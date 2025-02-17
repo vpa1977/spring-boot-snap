@@ -5,11 +5,11 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.canonical.springboot</groupId>
-    <artifactId>configure</artifactId>
+    <groupId>com.canonical.devpackspring</groupId>
+    <artifactId>contentsnaps</artifactId>
     <version>1.0</version>
 
-    <name>configure</name>
+    <name>contentsnaps</name>
     <url>https://github.com/vpa1977</url>
 
     <properties>
