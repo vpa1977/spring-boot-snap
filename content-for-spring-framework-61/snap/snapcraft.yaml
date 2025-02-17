@@ -13,6 +13,12 @@ grade: devel
 confinement: strict
 
 parts:
+  gradle-init:
+    plugin: nil
+    source: .
+    override-build: |
+      cp init.gradle $CRAFT_STAGE/
+
   spring-framework:
     plugin: nil
     source: https://github.com/spring-projects/spring-framework/
@@ -27,13 +33,4 @@ parts:
       echo 'org.gradle.daemon=false' >> $HOME/.gradle/gradle.properties
       echo 'org.gradle.daemon=4' >> $HOME/.gradle/gradle.properties
 
-      ./gradlew -PdeploymentRepository=$CRAFT_PART_INSTALL/maven-repo build publishAllPublicationsToDeploymentRepository
-
-  add-cache:
-    after:
-      - spring-framework
-    plugin: nil
-    source-type: local
-    source: .
-    override-build: |
-      python3 clone-deps.py $HOME/.gradle/ $CRAFT_PART_INSTALL/maven-repo
+      ./gradlew  --init-script=$CRAFT_STAGE/init.gradle -PdeploymentRepository=$CRAFT_PART_INSTALL/maven-repo build publishAllPublicationsToDeploymentRepository
