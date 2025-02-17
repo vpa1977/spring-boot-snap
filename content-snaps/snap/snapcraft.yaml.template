@@ -1,7 +1,7 @@
 name: ${name}
 base: bare
 build-base: core22
-version: ${version}
+version: '${version}'
 summary: ${summary}
 license: ${license}
 description: |
@@ -27,6 +27,7 @@ parts:
     build-packages:
       - ${build-jdk}
     override-build: |
+      echo 127.0.0.1 $(hostname) >> /etc/hosts
       mkdir -p $HOME/.gradle
       echo 'systemProp.user.name=spring-builds+github' >> $HOME/.gradle/gradle.properties
       echo 'systemProp.org.gradle.internal.launcher.welcomeMessageEnabled=false' >> $HOME/.gradle/gradle.properties
