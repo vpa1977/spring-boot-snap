@@ -1,6 +1,6 @@
 name: ${name}
 base: bare
-build-base: core22
+build-base: core24
 version: '${version}'
 summary: ${summary}
 license: ${license}
