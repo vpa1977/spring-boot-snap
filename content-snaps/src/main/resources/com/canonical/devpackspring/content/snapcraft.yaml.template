@@ -10,6 +10,14 @@ ${description}
 grade: devel
 confinement: strict
 
+slots:
+  ${name}:
+    interface: content
+    content: ${name}
+    source:
+      read:
+        - $SNAP
+
 parts:
   gradle-init:
     plugin: nil
