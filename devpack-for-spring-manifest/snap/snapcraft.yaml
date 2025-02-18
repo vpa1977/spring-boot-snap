@@ -34,7 +34,7 @@ parts:
     override-build: |
       craftctl default
       yamllint supported.yaml
-      craftctl set version="$($(yq eval '.version' supported.yaml))"
+      craftctl set version="$(yq .version supported.yaml)"
     prime:
       - supported.yaml
       - LICENSE
