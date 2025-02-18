@@ -16,50 +16,21 @@
  */
 package com.canonical.devpackspring.content;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import org.apache.commons.cli.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.text.StringSubstitutor;
 import org.yaml.snakeyaml.Yaml;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 public class App {
 
-    private static Log LOG = LogFactory.getLog(App.class);
     private static final String CONTENT_SNAPS = "content-snaps";
-
-    record ContentSnap(String name,
-            String version,
-            String summary,
-            String description,
-            String upstream) {
-
-        @Override
-        public int hashCode() {
-            return name.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (other == null) {
-                return false;
-            }
-            if (other instanceof ContentSnap) {
-                var otherSnap = (ContentSnap) other;
-                if (name.equals(otherSnap.name)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-    }
+    private static Log LOG = LogFactory.getLog(App.class);
 
     private static Set<ContentSnap> loadSnaps(String path) throws IOException {
         Yaml yaml = new Yaml();
@@ -78,32 +49,125 @@ public class App {
 
                 snapList.add(
                         new ContentSnap(data.get("name"),
-                        data.get("version"),
-                        data.get("summary"),
-                        data.get("description"),
-                        data.get("upstream")
+                                data.get("version"),
+                                data.get("summary"),
+                                data.get("description"),
+                                data.get("upstream"),
+                                data.get("license"),
+                                data.get("build-jdk")
                         ));
             }
         }
         return snapList;
     }
 
-    private static void writeContentSnap(ContentSnap snap) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private static void writeContentSnap(ContentSnap snap, Path destination) throws IOException {
+        String contents = readResource("snapcraft.yaml.template");
+        String gradleInit = readResource("init.gradle");
+        StringSubstitutor replacer = new StringSubstitutor(snap.getReplacements());
+        String snapcraftYaml = replacer.replace(contents);
+        File snapcraftDir = new File(destination.toFile(), snap.name);
+        if (!snapcraftDir.mkdirs())
+            throw new IOException("Unable to create " + snapcraftDir.getAbsolutePath());
+        File snapDir = new File(snapcraftDir, "snap");
+        if (!snapDir.mkdirs())
+            throw new IOException("Unable to create " + snapcraftDir.getAbsolutePath());
+
+        Files.writeString(new File(snapDir, "snapcraft.yaml").toPath(), snapcraftYaml);
+        Files.writeString(new File(snapcraftDir, "init.gradle").toPath(), gradleInit);
+    }
+
+    private static String readResource(String resource) throws IOException {
+        StringBuilder contents = new StringBuilder();
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(App.class.getResourceAsStream(resource)))) {
+            String line = null;
+            while ((line = r.readLine()) != null) {
+                contents.append(line);
+                contents.append("\n");
+            }
+        }
+        return contents.toString();
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 1) {
-            System.err.println("Usage: content-snaps <manifest-file>");
-            System.exit(0);
-        }
-        // read manifest
-        Set<ContentSnap> snaps = loadSnaps(args[0]);
-        // for each entry
-        for (ContentSnap snap  : snaps) {
-            writeContentSnap(snap);
-        }
-        //   create content/<content-snap-name>
 
+        Options options = new Options();
+        Option installOption = Option.builder("m").longOpt("manifest").argName("manifest").hasArg()
+                .required()
+                .desc("content snap manifest").build();
+        options.addOption(installOption);
+
+        Option destination = Option.builder("d").longOpt("destination").argName("directory").hasArg()
+                .required(false)
+                .desc("Generate snaps in <destination> directory")
+                .build();
+        options.addOption(destination);
+
+        CommandLineParser parser = new DefaultParser();
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption("m")) {
+                String manifest = cmd.getOptionValue("m");
+                Set<ContentSnap> snaps = loadSnaps(manifest);
+                for (ContentSnap snap : snaps) {
+                    writeContentSnap(snap, Path.of(cmd.getOptionValue("d", "content")));
+                }
+            } else {
+                throw new ParseException("Missing -m, print help");
+            }
+        } catch (ParseException e) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("generate", options);
+            System.exit(-1);
+        }
+    }
+
+    record ContentSnap(String name,
+                       String version,
+                       String summary,
+                       String description,
+                       String upstream,
+                       String license,
+                       String build_jdk) {
+
+
+        public Map<String, String> getReplacements() {
+
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("name", name);
+            map.put("version", version);
+            map.put("summary", summary);
+            map.put("description", multiLineDescription(description));
+            map.put("upstream", upstream);
+            map.put("license", license);
+            map.put("build-jdk", build_jdk);
+            return map;
+        }
+
+        public String multiLineDescription(String str) {
+            StringBuilder output = new StringBuilder();
+            StringTokenizer tk = new StringTokenizer(str, "\n");
+            while (tk.hasMoreTokens()) {
+                output.append("  ")
+                        .append(tk.nextToken());
+            }
+            return output.toString();
+        }
+
+        @Override
+        public int hashCode() {
+            return name.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other == null) {
+                return false;
+            }
+            if (other instanceof ContentSnap otherSnap) {
+                return name.equals(otherSnap.name);
+            }
+            return false;
+        }
     }
 }

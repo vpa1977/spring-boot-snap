@@ -5,7 +5,7 @@ version: '${version}'
 summary: ${summary}
 license: ${license}
 description: |
-  ${description}
+${description}
 
 grade: devel
 confinement: strict
