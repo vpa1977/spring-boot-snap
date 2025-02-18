@@ -37,7 +37,7 @@ content-snaps:
     mount: /maven-repo
     oss-eol: 2026-06-30
     name: content-for-spring-framework-62
-    build-jdk: openjdk-17-jdk-headless
+    build-jdk: openjdk-17-jdk
     summary: Rebuild of Spring® Framework sources v6.2.x
     description: |
       Rebuild of Spring® Framework sources v6.2.x.
@@ -52,10 +52,11 @@ content-snaps:
     mount: /maven-repo
     oss-eol: 2026-06-30
     name: content-for-spring-framework-61
-    build-jdk: openjdk-17-jdk-headless
+    build-jdk: openjdk-17-jdk
     summary: Rebuild of Spring® Framework sources v6.1.x
     description: |
       Rebuild of Spring® Framework sources v6.1.x.
       Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
     license: Apache-2.0
+    extra-command: -x test
     lts: true
