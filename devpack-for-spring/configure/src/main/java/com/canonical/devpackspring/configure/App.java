@@ -23,16 +23,26 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.stream.Collectors;
-import org.apache.commons.cli.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.SAXException;
 
 /**
  * @TODO i18n
@@ -42,17 +52,11 @@ import javax.xml.xpath.XPathExpressionException;
  */
 public class App {
 
-    private static Log LOG = LogFactory.getLog(App.class);
+    private static final Log LOG = LogFactory.getLog(App.class);
 
     private static String loadManifest() throws IOException {
-        StringBuffer ret = new StringBuffer();
-        String where = System.getenv("SNAP");
-        if (where == null)
-            where = "";
-        else
-            where +="/";
-
-        try (BufferedReader r = new BufferedReader(new FileReader(where + "manifest/manifest.yaml"))) {
+        var ret = new StringBuffer();
+        try (BufferedReader r = new BufferedReader(new FileReader("/snap/devpack-for-spring-manifest/current/supported.yaml"))) {
             String line;
             while ((line = r.readLine()) != null) {
                 ret.append(line);
