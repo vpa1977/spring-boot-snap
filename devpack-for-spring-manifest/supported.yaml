@@ -21,7 +21,7 @@ content-snaps:
     channel: latest/edge
     mount: /maven-repo
     oss-eol: 2025-06-30
-    name: content-for-spring-boot-33
+    name: content-for-spring-boot-runtime-33
     build-jdk: openjdk-17-jdk-headless
     summary: Rebuild of Spring® Boot Framework sources v3.33.x
     description: |
