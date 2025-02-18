@@ -41,4 +41,4 @@ parts:
       echo 'systemProp.org.gradle.internal.launcher.welcomeMessageEnabled=false' >> $HOME/.gradle/gradle.properties
       echo 'org.gradle.daemon=false' >> $HOME/.gradle/gradle.properties
       echo 'org.gradle.daemon=4' >> $HOME/.gradle/gradle.properties
-      ./gradlew --init-script=$CRAFT_STAGE/init.gradle -PdeploymentRepository=$CRAFT_PART_INSTALL/maven-repo build publishAllPublicationsToDeploymentRepository
+      ./gradlew --init-script=$CRAFT_STAGE/init.gradle -PdeploymentRepository=$CRAFT_PART_INSTALL/maven-repo build publishAllPublicationsToDeploymentRepository ${extra-command}

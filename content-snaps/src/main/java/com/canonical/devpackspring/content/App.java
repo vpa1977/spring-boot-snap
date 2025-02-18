@@ -54,7 +54,8 @@ public class App {
                                 data.get("description"),
                                 data.get("upstream"),
                                 data.get("license"),
-                                data.get("build-jdk")
+                                data.get("build-jdk"),
+                                data.get("extra-command")
                         ));
             }
         }
@@ -129,7 +130,8 @@ public class App {
                        String description,
                        String upstream,
                        String license,
-                       String build_jdk) {
+                       String build_jdk,
+                       String extra_command) {
 
 
         public Map<String, String> getReplacements() {
@@ -142,6 +144,7 @@ public class App {
             map.put("upstream", upstream);
             map.put("license", license);
             map.put("build-jdk", build_jdk);
+            map.put("extra-command", extra_command);
             return map;
         }
 
