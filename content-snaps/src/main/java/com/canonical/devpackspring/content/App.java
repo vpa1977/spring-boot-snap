@@ -62,15 +62,16 @@ public class App {
     }
 
     private static void writeContentSnap(ContentSnap snap, Path destination) throws IOException {
+        LOG.info("Writing content snap " + snap.name + " version " + snap.version);
         String contents = readResource("snapcraft.yaml.template");
         String gradleInit = readResource("init.gradle");
         StringSubstitutor replacer = new StringSubstitutor(snap.getReplacements());
         String snapcraftYaml = replacer.replace(contents);
         File snapcraftDir = new File(destination.toFile(), snap.name);
-        if (!snapcraftDir.mkdirs())
+        if (!snapcraftDir.exists() && !snapcraftDir.mkdirs())
             throw new IOException("Unable to create " + snapcraftDir.getAbsolutePath());
         File snapDir = new File(snapcraftDir, "snap");
-        if (!snapDir.mkdirs())
+        if (!snapDir.exists() && !snapDir.mkdirs())
             throw new IOException("Unable to create " + snapcraftDir.getAbsolutePath());
 
         Files.writeString(new File(snapDir, "snapcraft.yaml").toPath(), snapcraftYaml);
