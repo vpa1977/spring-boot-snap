@@ -17,13 +17,14 @@
 
 package com.canonical.devpackspring.configure;
 
-import org.junit.jupiter.api.Test;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 
 public class SettingsTest {
@@ -53,7 +54,7 @@ public class SettingsTest {
 
     @Test
     public void testAddMavenProfile() throws Exception {
-        Snap snap = new Snap("foo", "latest/edge", "/foo", false);
+        Snap snap = new Snap("foo", "1.1.1", "latest/edge", "/foo", "foobar", false);
         File f = File.createTempFile("prefix", "suffix");
         f.delete();
         File settingsFile = new File(f, "settings.xml");

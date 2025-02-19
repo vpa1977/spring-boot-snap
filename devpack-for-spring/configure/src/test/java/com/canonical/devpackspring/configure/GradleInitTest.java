@@ -18,15 +18,14 @@
 package com.canonical.devpackspring.configure;
 
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class GradleInitTest {
 
@@ -35,7 +34,7 @@ public class GradleInitTest {
 
     @Test
     public void testWriteGradleInit() throws IOException {
-        var snap = new Snap("foo", "edge", "/mnt", false);
+        var snap = new Snap("foo", "1.1", "edge", "/mnt", "foobar", false);
         var init = new GradleInit(outputDir);
         init.addGradletInitFile(snap);
         String result = Files.readString(Path.of(outputDir.getAbsolutePath(), "foo.gradle"));

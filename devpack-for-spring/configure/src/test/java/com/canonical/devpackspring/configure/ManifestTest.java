@@ -18,14 +18,13 @@
 package com.canonical.devpackspring.configure;
 
 
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.MatcherAssert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 
 public class ManifestTest extends Manifest {
@@ -37,15 +36,19 @@ public class ManifestTest extends Manifest {
                   content-for-spring-boot-33:
                     channel: latest/edge
                     mount: /foo
+                    version: 6.2.2
+                    description: foobar
                   content-for-spring-framework-61:
                     channel: latest/edge
                     mount: /foo
+                    version: 6.2.2
+                    description: foobar
                                 """;
 
         Set<Snap> snaps = super.load(manifest);
         HashSet<Snap> expected = new HashSet<Snap>();
-        expected.add(new Snap("content-for-spring-boot-33", "latest/edge", "/foo", false));
-        expected.add(new Snap("content-for-spring-framework-61", "latest/edge", "/foo", false));
+        expected.add(new Snap("content-for-spring-boot-33", "6.2.2", "latest/edge", "/foo", "foobar", false));
+        expected.add(new Snap("content-for-spring-framework-61","6.2.2", "latest/edge", "/foo", "foobar", false));
         MatcherAssert.assertThat(snaps, is(expected));
         Snap snap = snaps.iterator().next();
         assertEquals("latest/edge", snap.channel());

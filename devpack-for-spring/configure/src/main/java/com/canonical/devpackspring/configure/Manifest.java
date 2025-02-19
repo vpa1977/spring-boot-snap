@@ -20,9 +20,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Set;
-import java.util.Map;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.yaml.snakeyaml.Yaml;
 
 public class Manifest {
@@ -49,7 +50,12 @@ public class Manifest {
                 var data = (Map<String, String>) snaps.get(name);
 
                 snapList.add(
-                        new Snap(name, data.get("channel"), data.get("mount"), isInstalled(name)));
+                        new Snap(name,
+                            data.get("version"),
+                            data.get("channel"),
+                            data.get("mount"),
+                            data.get("summary"),
+                            isInstalled(name)));
             }
         }
         return snapList;

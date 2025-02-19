@@ -16,7 +16,7 @@
  */
 package com.canonical.devpackspring.configure;
 
-public record Snap(String name, String channel, String mount, boolean installed) {
+public record Snap(String name, String version, String channel, String mount, String summary, boolean installed) {
 
     @Override
     public int hashCode() {

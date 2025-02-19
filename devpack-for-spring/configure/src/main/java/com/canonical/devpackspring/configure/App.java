@@ -74,18 +74,21 @@ public class App {
             System.out.println("\t None");
             return;
         }
+
         for (var item : snaps) {
-            SnapDescription desc = StoreApi.querySnap(item.name(), item.channel());
-            System.out.println("\t- " + item.name() + " channel " + item.channel() + " version "+ desc.version());
-            System.out.println("\t  " + desc.description());
+            System.out.println("\t- " + item.name() + " channel " + item.channel() + " version "+ item.version());
+            System.out.println("\t\t  " + item.summary());
         }
+
     }
 
     private static void list() throws IOException {
         System.out.println("Installed content snaps:");
         list(true);
+        System.out.println();
         System.out.println("Available content snaps:");
         list(false);
+        System.out.println();
     }
 
     private static void refresh() throws Throwable {
