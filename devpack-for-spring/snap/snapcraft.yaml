@@ -81,5 +81,11 @@ apps:
   local-maven:
     command: install.sh -r
 
+  setup-maven:
+    command: install.sh -m
+
+  setup-gradle:
+    command: install.sh -g
+
   spring-cli:
     command: spring-cli/run-spring-cli.sh

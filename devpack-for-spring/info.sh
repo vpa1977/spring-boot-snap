@@ -26,6 +26,12 @@ case ${command} in
     local-maven)
         devpack-for-spring.local-maven $*
     ;;
+    setup-maven)
+        devpack-for-spring.setup-maven
+    ;;
+    setup-gradle)
+        devpack-for-spring.setup-gradle
+    ;;
     *)
         cat $SNAP/info.txt
     ;;
