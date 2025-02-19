@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Run a command in elevated mode (sudo or pkexec, whichever is available)
 run_elevated() {
