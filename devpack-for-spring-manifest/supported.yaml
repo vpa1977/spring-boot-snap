@@ -1,5 +1,21 @@
 version: 1
 content-snaps:
+  content-for-spring-cli:
+    upstream: https://github.com/spring-projects/spring-cli
+    version: 0.9.0
+    channel: latest/edge
+    mount: /spring-cli
+    oss-eol: n/a
+    name: content-for-spring-cli
+    build-jdk: openjdk-17-jdk-headless
+    summary: Rebuild of Spring® CLI sources
+    description: |
+      Rebuild of Spring® CLI sources.
+      Spring is a trademark of Broadcom Inc. and/or its subsidiaries.
+    license: Apache-2.0
+    lts: false
+    tool: true
+
   content-for-spring-boot-34:
     upstream: https://github.com/spring-projects/spring-boot
     version: 3.4.2
