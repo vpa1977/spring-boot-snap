@@ -58,8 +58,8 @@ public class App {
                                 snap.get("description"),
                                 snap.get("upstream"),
                                 snap.get("license"),
-                                snap.get("build-jdk"),
-                                snap.get("extra-command")
+                                snap.getOrDefault("build-jdk", "openjdk-17-jdk-headless"),
+                                snap.getOrDefault("extra-command", "")
                         ));
             }
         }
