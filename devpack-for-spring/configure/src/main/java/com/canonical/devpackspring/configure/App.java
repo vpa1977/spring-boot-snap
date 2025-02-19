@@ -79,7 +79,23 @@ public class App {
             System.out.println("\t- " + item.name() + " channel " + item.channel() + " version "+ item.version());
             System.out.println("\t\t  " + item.summary());
         }
+    }
 
+    enum BuildSystem {
+        MAVEN,
+        GRADLE
+    }
+
+    private static void setup(BuildSystem system) throws IOException, XPathExpressionException, ParserConfigurationException, TransformerException, SAXException {
+        var manifest = new Manifest();
+        var snaps = manifest.load(loadManifest());
+        for (var snap : snaps.stream().filter(Snap::installed).collect(Collectors.toSet())) {
+            switch (system) {
+                case MAVEN -> setupMaven(snap);
+                case GRADLE -> setupGradle(snap);
+                default -> throw new IllegalStateException("Unexpected value: " + system);
+            }
+        }
     }
 
     private static void list() throws IOException {
@@ -195,6 +211,16 @@ public class App {
         Option refreshOption = Option.builder("r").longOpt("refresh").desc("populate local Maven repository").build();
         options.addOption(refreshOption);
 
+        Option maven =  Option.builder("m")
+            .longOpt("setupMaven")
+            .desc("Update Maven settings.xml - setup installed snaps").build();
+        options.addOption(maven);
+
+        Option gradle = Option.builder("g")
+            .longOpt("setupGradle")
+            .desc("Update Gradle init scripts - setup installed snaps").build();
+        options.addOption(gradle);
+
         CommandLineParser parser = new DefaultParser();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -205,7 +231,12 @@ public class App {
                 install(snap);
             } else if (cmd.hasOption("r")) {
                 refresh();
-            } else {
+            } else if (cmd.hasOption("m")) {
+                setup(BuildSystem.MAVEN);
+            } else if (cmd.hasOption("g")) {
+                setup(BuildSystem.GRADLE);
+            }
+            else {
                 HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("install", options);
             }
