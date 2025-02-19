@@ -26,3 +26,25 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('showRepositories') {
+    group = "help"
+    description = "Prints the repositories configured in the build"
+    doLast {
+        repositories.each  {
+            println "repository: ${it.name} ('${it.url}')"
+        }
+    }
+}
+
+
+tasks.register("printPluginRepositories") {
+    group = "help"
+    description = "Prints the plugin repositories configured in the build."
+
+    doLast {
+        gradle.settings.pluginManagement.repositories.forEach { repo ->
+            println("pluginRepository: ${repo.name}: ${repo.url}")
+        }
+    }
+}
