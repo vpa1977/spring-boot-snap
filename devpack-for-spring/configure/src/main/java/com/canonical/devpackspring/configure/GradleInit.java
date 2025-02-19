@@ -35,9 +35,18 @@ public class GradleInit {
     class SpringBootSnapRepositoryPlugin implements Plugin<Gradle> {
 
         void apply(Gradle gradle) {
+            gradle.beforeSettings { settings ->
+                settings.pluginManagement.repositories { handler ->
+                    var repo = maven {
+                            name "plugin-%s"
+                            url "file:///snap/%s/current/maven-repo/"
+                        }
+                    handler.remove(repo)
+                    handler.addFirst(repo)
+                }
+            }
             gradle.allprojects { project ->
                 project.repositories {
-                    // add the enterprise repository
                     maven {
                         name "%s"
                         url "file:///snap/%s/current/maven-repo/"
@@ -48,6 +57,14 @@ public class GradleInit {
 
     }
             """;
+
+    private final String GRADLE_CENTRAL_PLUGIN = """
+    beforeSettings { settings ->
+        settings.pluginManagement.repositories {
+            gradlePluginPortal()
+        }
+    }
+    """;
 
     private File m_gradleInitDir;
 
@@ -62,6 +79,11 @@ public class GradleInit {
             return false;
         String initString = String.format(GRADLE_INIT_STRING, snap.name(), snap.name());
         Files.writeString(settings.toPath(), initString, StandardOpenOption.CREATE_NEW);
+
+        File commonSettings = new File(m_gradleInitDir, "gradlePluginPortal.gradle");
+        if (commonSettings.exists())
+            return true;
+        Files.writeString(commonSettings.toPath(), GRADLE_CENTRAL_PLUGIN, StandardOpenOption.CREATE_NEW);
         return true;
     }
 
