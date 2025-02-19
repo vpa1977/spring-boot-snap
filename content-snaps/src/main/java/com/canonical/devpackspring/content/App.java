@@ -45,17 +45,21 @@ public class App {
             }
             for (var name : snaps.keySet()) {
                 @SuppressWarnings("unchecked")
-                var data = (Map<String, String>) snaps.get(name);
+                var data = (Map<String, Object>) snaps.get(name);
+                if (data.get("tool") instanceof Boolean b && b) {
+                    LOG.info("Skipping " + data.get("name"));
+                    continue;
+                }
 
                 snapList.add(
-                        new ContentSnap(data.get("name"),
-                                data.get("version"),
-                                data.get("summary"),
-                                data.get("description"),
-                                data.get("upstream"),
-                                data.get("license"),
-                                data.get("build-jdk"),
-                                data.get("extra-command")
+                        new ContentSnap(String.valueOf(data.get("name")),
+                                String.valueOf(data.get("version")),
+                                String.valueOf(data.get("summary")),
+                                String.valueOf(data.get("description")),
+                                String.valueOf(data.get("upstream")),
+                                String.valueOf(data.get("license")),
+                                String.valueOf(data.get("build-jdk")),
+                                String.valueOf(data.get("extra-command"))
                         ));
             }
         }
