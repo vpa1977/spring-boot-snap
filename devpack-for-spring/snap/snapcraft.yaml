@@ -81,8 +81,5 @@ apps:
   local-maven:
     command: install.sh -r
 
-  spring:
-    command: spring-boot-cli/bin/spring
-
   spring-cli:
     command: spring-cli/run-spring-cli.sh
