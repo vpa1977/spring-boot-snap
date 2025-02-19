@@ -50,20 +50,6 @@ parts:
       cp $CRAFT_PROJECT_DIR/run-spring-cli.sh $CRAFT_PART_INSTALL/spring-cli
       craftctl default
 
-  spring-boot-cli:
-    plugin: nil
-    source: https://github.com/spring-projects/spring-boot
-    source-type: git
-    source-tag: v3.2.4
-    build-packages:
-      - openjdk-17-jdk-headless
-      - tar
-    override-build: |
-      cd spring-boot-project/spring-boot-tools/spring-boot-cli/ && ../../../gradlew publish
-    override-stage: |
-      mkdir -p $CRAFT_PART_INSTALL/spring-boot-cli
-      tar xvf $CRAFT_PART_BUILD/spring-boot-project/spring-boot-tools/spring-boot-cli/build/distributions/spring-boot-cli-3.2.4-bin.tar.gz --strip-components 1 -C $CRAFT_PART_INSTALL/spring-boot-cli
-      craftctl default
 
   devpack-for-spring:
     plugin: nil
