@@ -50,16 +50,16 @@ public class App {
                     LOG.info("Skipping " + data.get("name"));
                     continue;
                 }
-
+                var snap = (Map<String,String>)snaps.get(name);
                 snapList.add(
-                        new ContentSnap(String.valueOf(data.get("name")),
-                                String.valueOf(data.get("version")),
-                                String.valueOf(data.get("summary")),
-                                String.valueOf(data.get("description")),
-                                String.valueOf(data.get("upstream")),
-                                String.valueOf(data.get("license")),
-                                String.valueOf(data.get("build-jdk")),
-                                String.valueOf(data.get("extra-command"))
+                        new ContentSnap(snap.get("name"),
+                                snap.get("version"),
+                                snap.get("summary"),
+                                snap.get("description"),
+                                snap.get("upstream"),
+                                snap.get("license"),
+                                snap.get("build-jdk"),
+                                snap.get("extra-command")
                         ));
             }
         }
